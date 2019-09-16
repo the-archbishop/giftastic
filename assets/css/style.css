@@ -1,0 +1,27 @@
+body {
+    background-color: #ECF2EA;
+}
+
+.form-group {
+    padding: 100px;
+}
+
+.btn {
+    margin: 2px;
+}
+
+#buttons {
+    padding-bottom: 15px;
+}
+
+#submit {
+    margin-top: 8px;
+}
+
+img, p {
+    padding: 10px;
+}
+
+span {
+    padding: 10px;
+}
