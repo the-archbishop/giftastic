@@ -34,15 +34,19 @@ function generateImage (id, title, rating, staticImg, animatedImg) {
     image.attr('data-ani', animatedImg);
     imageCol.append(image);
 
+    // Create empty p element
     p = $('<p>');
+    // If the id is found in the favorites array, display red heart icon, else display black, empty heart
     if (favorites.includes(id)) {
         p.html('<i id="' + id + '" class="fav fas fa-heart" style="color:#d11919;"></i><br>Title: ' + title + "<br>Rating: " + rating);
     } else {
         p.html('<i id="' + id + '" class="fav far fa-heart" style="color:#000000;"></i><br>Title: ' + title + "<br>Rating: " + rating);
     }
     p.addClass("h6")
+    // Append the p element to the div element created above
     imageCol.append(p);
 
+    // Append to the gifs section
     $('#gifs').append(row);
 }
 
@@ -53,7 +57,7 @@ var newPokemon = "";
 // Define empty row to populate gif images
 var row = $('<div>');
 row.addClass('row');
-// Initialize empty favorites array
+// Initialize favorites array from local storage
 var favorites = JSON.parse(localStorage.getItem("favorites"));
 
 // Generate default buttons
@@ -72,6 +76,7 @@ $("body").on("click", ".pokeBtns", function(){
     // Clear out old gifs
     row.empty();
     
+    // Query giphy api for the ID of the clicked button
     pokeGif = $(this).attr('id');
     queryURL = "https://api.giphy.com/v1/gifs/search?api_key=gaXrndLx7bcz1nxQ4vXX9mTzp5jW1jrs&limit=10&q=" + pokeGif;
     $.ajax({
@@ -88,7 +93,8 @@ $("body").on("click", ".pokeBtns", function(){
             staticImg = results[x].images.fixed_height_still.url;
             animatedImg = results[x].images.fixed_height.url;
 
-            generateImage(imgID, title, rating, staticImg, animatedImg, favorites);
+            // Send data to generateImage function
+            generateImage(imgID, title, rating, staticImg, animatedImg);
         }
     });
 });
@@ -107,21 +113,25 @@ $("body").on("click", "img", function(){
     }
 });
 
-// When a heart is clicked to mark favorite
+// When a heart is clicked to mark/unmark favorite
 $("body").on("click", ".fav", function(){
+    // Check image fav state
     favState = $(this).attr('class');
     favID = $(this).attr('id');
+    // Not favorited already, mark as favorite
     if(favState == "fav far fa-heart") {
         $(this).removeClass("fav far fa-heart")
         $(this).addClass("fav fas fa-heart")
         $(this).attr('style', "color:#d11919;");
         favorites.push(favID);
     } else {
+        // Already favorited, unmark
         $(this).removeClass("fav fas fa-heart")
         $(this).addClass("fav far fa-heart")
         $(this).attr('style', "color:#000000;");
         favorites.pop(favID);
     }
+    // Add giphy ID to favorites array
     localStorage.setItem("favorites", JSON.stringify(favorites));
 });
 
@@ -131,7 +141,10 @@ $("body").on("click", "#favorites", function(){
     row.empty();
     
     for(x = 0; x < favorites.length; x++) {
+        // Get giphy ID from array
         gifID = favorites[x];
+        
+        // Query giphy for the image by ID
         queryURL = "https://api.giphy.com/v1/gifs/" + gifID + "?&api_key=gaXrndLx7bcz1nxQ4vXX9mTzp5jW1jrs"
 
         $.ajax({
@@ -147,7 +160,8 @@ $("body").on("click", "#favorites", function(){
              staticImg = results.images.fixed_height_still.url;
              animatedImg = results.images.fixed_height.url;
             
-             generateImage(imgID, title, rating, staticImg, animatedImg, favorites);
+             // Send data to generateImage function
+             generateImage(imgID, title, rating, staticImg, animatedImg);
         });
     }
 });
