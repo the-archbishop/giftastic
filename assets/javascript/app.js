@@ -36,12 +36,20 @@ function generateImage (id, title, rating, staticImg, animatedImg) {
 
     // Create empty p element
     p = $('<p>');
-    // If the id is found in the favorites array, display red heart icon, else display black, empty heart
-    if (favorites.includes(id)) {
-        p.html('<i id="' + id + '" class="fav fas fa-heart" style="color:#d11919;"></i><br>Title: ' + title + "<br>Rating: " + rating);
+    
+    // Check if favorites has a value
+    if(favorites) {
+        // If the id is found in the favorites array, display red heart icon, else display black, empty heart
+        if (favorites.includes(id)) {
+            p.html('<i id="' + id + '" class="fav fas fa-heart" style="color:#d11919;"></i><br>Title: ' + title + "<br>Rating: " + rating);
+        } else {
+            p.html('<i id="' + id + '" class="fav far fa-heart" style="color:#000000;"></i><br>Title: ' + title + "<br>Rating: " + rating);
+        }
     } else {
+        // Favorites has no value 
         p.html('<i id="' + id + '" class="fav far fa-heart" style="color:#000000;"></i><br>Title: ' + title + "<br>Rating: " + rating);
     }
+
     p.addClass("h6")
     // Append the p element to the div element created above
     imageCol.append(p);
@@ -59,13 +67,7 @@ var row = $('<div>');
 row.addClass('row');
 // Initialize favorites array from local storage
 var favorites = JSON.parse(localStorage.getItem("favorites"));
-if (favorites) {
-    // Do nothing, favorites already has a value and won't generate an error
-} else {
-    // Give favorites a dummy value
-    localStorage.setItem("favorites", JSON.stringify("1"));
-    favorites = JSON.parse(localStorage.getItem("favorites"));
-}
+
 
 // Generate default buttons
 buttonCreate(topics);
