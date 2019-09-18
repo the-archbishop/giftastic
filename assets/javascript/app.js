@@ -54,7 +54,7 @@ var newPokemon = "";
 var row = $('<div>');
 row.addClass('row');
 // Initialize empty favorites array
-var favorites = [];
+var favorites = JSON.parse(localStorage.getItem("favorites"));
 
 // Generate default buttons
 buttonCreate(topics);
@@ -88,7 +88,7 @@ $("body").on("click", ".pokeBtns", function(){
             staticImg = results[x].images.fixed_height_still.url;
             animatedImg = results[x].images.fixed_height.url;
 
-            generateImage(imgID, title, rating, staticImg, animatedImg);
+            generateImage(imgID, title, rating, staticImg, animatedImg, favorites);
         }
     });
 });
@@ -122,7 +122,7 @@ $("body").on("click", ".fav", function(){
         $(this).attr('style', "color:#000000;");
         favorites.pop(favID);
     }
-    // localStorage.setItem("favorites", JSON.stringify(favorites));
+    localStorage.setItem("favorites", JSON.stringify(favorites));
 });
 
 // When the favorites button is clicked
@@ -141,12 +141,13 @@ $("body").on("click", "#favorites", function(){
             var results = response.data;
 
              // Get properties of each image
+             imgID = results.id;
              title = results.title;
              rating = results.rating;
              staticImg = results.images.fixed_height_still.url;
              animatedImg = results.images.fixed_height.url;
- 
-             generateImage(gifID, title, rating, staticImg, animatedImg);
+            
+             generateImage(imgID, title, rating, staticImg, animatedImg, favorites);
         });
     }
 });
