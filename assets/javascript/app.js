@@ -59,6 +59,13 @@ var row = $('<div>');
 row.addClass('row');
 // Initialize favorites array from local storage
 var favorites = JSON.parse(localStorage.getItem("favorites"));
+if (favorites) {
+    // Do nothing, favorites already has a value and won't generate an error
+} else {
+    // Give favorites a dummy value
+    localStorage.setItem("favorites", JSON.stringify("1"));
+    favorites = JSON.parse(localStorage.getItem("favorites"));
+}
 
 // Generate default buttons
 buttonCreate(topics);
