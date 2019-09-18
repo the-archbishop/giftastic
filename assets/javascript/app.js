@@ -127,6 +127,7 @@ $("body").on("click", ".fav", function(){
     // Check image fav state
     favState = $(this).attr('class');
     favID = $(this).attr('id');
+
     // Not favorited already, mark as favorite
     if(favState == "fav far fa-heart") {
         $(this).removeClass("fav far fa-heart")
