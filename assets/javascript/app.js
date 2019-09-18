@@ -66,7 +66,7 @@ var newPokemon = "";
 var row = $('<div>');
 row.addClass('row');
 // Initialize favorites array from local storage
-var favorites = JSON.parse(localStorage.getItem("favorites"));
+var favorites = [];
 
 
 // Generate default buttons
@@ -140,8 +140,6 @@ $("body").on("click", ".fav", function(){
         $(this).attr('style', "color:#000000;");
         favorites.pop(favID);
     }
-    // Add giphy ID to favorites array
-    localStorage.setItem("favorites", JSON.stringify(favorites));
 });
 
 // When the favorites button is clicked
